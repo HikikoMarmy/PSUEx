@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{74af6a56-0c09-468a-ab1d-f4d2533d161b}</ProjectGuid>
+    <RootNamespace>PSUEx</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)lib\x86;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;PSUEX_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>ImGui;Detours4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;PSUEX_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>ImGui;Detours4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d9.lib;d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;PSUEX_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;PSUEX_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Constants.h" />
+    <ClInclude Include="Detours4\detours.h" />
+    <ClInclude Include="Detours4\detver.h" />
+    <ClInclude Include="ExceptionHandler.h" />
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="Globals.h" />
+    <ClInclude Include="ImGui\backends\imgui_impl_dx9.h" />
+    <ClInclude Include="ImGui\backends\imgui_impl_win32.h" />
+    <ClInclude Include="ImGui\imconfig.h" />
+    <ClInclude Include="ImGui\imgui.h" />
+    <ClInclude Include="ImGui\imgui_internal.h" />
+    <ClInclude Include="Json.hpp" />
+    <ClInclude Include="PSUDetour\Hook_004CF9A0.hpp" />
+    <ClInclude Include="PSUDetour\Hook_0050B790_LogChatMessage.hpp" />
+    <ClInclude Include="PSUDetour\Hook_0074B490_memset32.hpp" />
+    <ClInclude Include="PSUDetour\Hook_00774F90.hpp" />
+    <ClInclude Include="PSUDetour\Hook_InitializeD3D9.hpp" />
+    <ClInclude Include="PSUDetour\Hook_TItemBulletSlicer.hpp" />
+    <ClInclude Include="PSUDetour\Hook_GetCPUName.hpp" />
+    <ClInclude Include="PSUDetour\Hook_00814040.hpp" />
+    <ClInclude Include="PSUDetour\Hook_CreateWindow.hpp" />
+    <ClInclude Include="PSUDetour\Hook_EntryPoint.hpp" />
+    <ClInclude Include="PSUDetour\Hook_0076E330_Audio_PlayADX.hpp" />
+    <ClInclude Include="PSUDetour\Hook_GameFlags.hpp" />
+    <ClInclude Include="PSUDetour\Hook_TCameraTaskPlay.hpp" />
+    <ClInclude Include="PSUDetour\Hook_UIScale.hpp" />
+    <ClInclude Include="PSUEx.h" />
+    <ClInclude Include="PSUExConfig.h" />
+    <ClInclude Include="PSUIni.hpp" />
+    <ClInclude Include="PSUMemory\Memory.hpp" />
+    <ClInclude Include="PSUMemory\PatchRegistry.h" />
+    <ClInclude Include="PSUMemory\Patch\FastGrindingPatch.hpp" />
+    <ClInclude Include="PSUMemory\Patch\FastStartPatch.hpp" />
+    <ClInclude Include="PSUMemory\Patch\MinimapPatch.hpp" />
+    <ClInclude Include="PSUMemory\Patch\NoVideoPatch.hpp" />
+    <ClInclude Include="PSUMemory\Patch\ProfilerPatch.hpp" />
+    <ClInclude Include="PSUMemory\Patch\ResolutionPatch.hpp" />
+    <ClInclude Include="PSUMemory\Patch\TextSmoothingPatch.hpp" />
+    <ClInclude Include="PSUMemory\Patch\V1TextureFilter.hpp" />
+    <ClInclude Include="PSUMemory\Patch\ViewDistancePatch.hpp" />
+    <ClInclude Include="PSUModManager\ModManager.hpp" />
+    <ClInclude Include="PSUOverlay\ImageMng.h" />
+    <ClInclude Include="PSUOverlay\Interface\CameraDisplay.h" />
+    <ClInclude Include="PSUOverlay\Interface\IFWinCtrl.h" />
+    <ClInclude Include="PSUOverlay\Interface\LogDisplay.h" />
+    <ClInclude Include="PSUOverlay\Interface\LootDisplay.h" />
+    <ClInclude Include="PSUOverlay\Interface\ConfigDisplay.h" />
+    <ClInclude Include="PSUOverlay\PSUOverlay.h" />
+    <ClInclude Include="PSUStructs\Item.h" />
+    <ClInclude Include="PSUStructs\Matrix4x4.hpp" />
+    <ClInclude Include="PSUStructs\PSUPlayerData.h" />
+    <ClInclude Include="PSUStructs\Vector3F.hpp" />
+    <ClInclude Include="PSUStructs\PSUWorld.hpp" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Detours4\creatwth.cpp" />
+    <ClCompile Include="Detours4\detours.cpp" />
+    <ClCompile Include="Detours4\disasm.cpp" />
+    <ClCompile Include="Detours4\disolarm.cpp" />
+    <ClCompile Include="Detours4\disolarm64.cpp" />
+    <ClCompile Include="Detours4\disolia64.cpp" />
+    <ClCompile Include="Detours4\disolx64.cpp" />
+    <ClCompile Include="Detours4\disolx86.cpp" />
+    <ClCompile Include="Detours4\image.cpp" />
+    <ClCompile Include="Detours4\modules.cpp" />
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="ExceptionHandler.cpp" />
+    <ClCompile Include="ImGui\backends\imgui_impl_dx9.cpp" />
+    <ClCompile Include="ImGui\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="ImGui\imgui.cpp" />
+    <ClCompile Include="ImGui\imgui_demo.cpp" />
+    <ClCompile Include="ImGui\imgui_draw.cpp" />
+    <ClCompile Include="ImGui\imgui_tables.cpp" />
+    <ClCompile Include="ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="PSUExConfig.cpp" />
+    <ClCompile Include="PSUOverlay\ImageMng.cpp" />
+    <ClCompile Include="PSUOverlay\Interface\CameraDisplay.cpp" />
+    <ClCompile Include="PSUOverlay\Interface\LogDisplay.cpp" />
+    <ClCompile Include="PSUOverlay\Interface\LootDisplay.cpp" />
+    <ClCompile Include="PSUOverlay\Interface\ConfigDisplay.cpp" />
+    <ClCompile Include="PSUOverlay\PSUOverlay.cpp" />
+    <ClCompile Include="PSUStructs\PSUPlayerData.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resource\element_blank.png" />
+    <Image Include="Resource\element_dark.png" />
+    <Image Include="Resource\element_fire.png" />
+    <Image Include="Resource\element_ground.png" />
+    <Image Include="Resource\element_ice.png" />
+    <Image Include="Resource\element_light.png" />
+    <Image Include="Resource\element_lightning.png" />
+    <Image Include="Resource\element_neutral.png" />
+    <Image Include="Resource\Item\item_board.png" />
+    <Image Include="Resource\Item\item_boost.png" />
+    <Image Include="Resource\Item\item_cast_01.png" />
+    <Image Include="Resource\Item\item_cast_02.png" />
+    <Image Include="Resource\Item\item_cast_03.png" />
+    <Image Include="Resource\Item\item_cast_04.png" />
+    <Image Include="Resource\Item\item_cast_05.png" />
+    <Image Include="Resource\Item\item_cast_06.png" />
+    <Image Include="Resource\Item\item_clothing_01.png" />
+    <Image Include="Resource\Item\item_clothing_02.png" />
+    <Image Include="Resource\Item\item_clothing_03.png" />
+    <Image Include="Resource\Item\item_clothing_04.png" />
+    <Image Include="Resource\Item\item_clothing_05.png" />
+    <Image Include="Resource\Item\item_clothing_06.png" />
+    <Image Include="Resource\Item\item_clothing_XX.png" />
+    <Image Include="Resource\Item\item_consumable_01.png" />
+    <Image Include="Resource\Item\item_consumable_02.png" />
+    <Image Include="Resource\Item\item_consumable_03.png" />
+    <Image Include="Resource\Item\item_consumable_04.png" />
+    <Image Include="Resource\Item\item_consumable_05.png" />
+    <Image Include="Resource\Item\item_consumable_06.png" />
+    <Image Include="Resource\Item\item_decoration.png" />
+    <Image Include="Resource\Item\item_gift.png" />
+    <Image Include="Resource\Item\item_grinder.png" />
+    <Image Include="Resource\Item\item_line_shield.png" />
+    <Image Include="Resource\Item\item_material_01.png" />
+    <Image Include="Resource\Item\item_material_02.png" />
+    <Image Include="Resource\Item\item_material_03.png" />
+    <Image Include="Resource\Item\item_material_04.png" />
+    <Image Include="Resource\Item\item_material_05.png" />
+    <Image Include="Resource\Item\item_material_06.png" />
+    <Image Include="Resource\Item\item_material_07.png" />
+    <Image Include="Resource\Item\item_material_08.png" />
+    <Image Include="Resource\Item\item_material_09.png" />
+    <Image Include="Resource\Item\item_material_0A.png" />
+    <Image Include="Resource\Item\item_material_0B.png" />
+    <Image Include="Resource\Item\item_material_0C.png" />
+    <Image Include="Resource\Item\item_material_0D.png" />
+    <Image Include="Resource\Item\item_material_0E.png" />
+    <Image Include="Resource\Item\item_material_0F.png" />
+    <Image Include="Resource\Item\item_material_10.png" />
+    <Image Include="Resource\Item\item_meseta.png" />
+    <Image Include="Resource\Item\item_photon_art_disk.png" />
+    <Image Include="Resource\Item\item_pm_device.png" />
+    <Image Include="Resource\Item\item_consumable_07.png" />
+    <Image Include="Resource\Item\item_tool_01.png" />
+    <Image Include="Resource\Item\item_tool_02.png" />
+    <Image Include="Resource\Item\item_tool_03.png" />
+    <Image Include="Resource\Item\item_tool_04.png" />
+    <Image Include="Resource\Item\item_trap_01.png" />
+    <Image Include="Resource\Item\item_trap_02.png" />
+    <Image Include="Resource\Item\item_unit_01.png" />
+    <Image Include="Resource\Item\item_unit_02.png" />
+    <Image Include="Resource\Item\item_unit_03.png" />
+    <Image Include="Resource\Item\item_unit_04.png" />
+    <Image Include="Resource\Item\item_xx.png" />
+    <Image Include="Resource\star_03.png" />
+    <Image Include="Resource\star_00.png" />
+    <Image Include="Resource\star_02.png" />
+    <Image Include="Resource\star_01.png" />
+    <Image Include="Resource\star_05.png" />
+    <Image Include="Resource\star_04.png" />
+    <Image Include="Resource\Weapon\weapon_axe.png" />
+    <Image Include="Resource\Weapon\weapon_card.png" />
+    <Image Include="Resource\Weapon\weapon_claw.png" />
+    <Image Include="Resource\Weapon\weapon_crossbow.png" />
+    <Image Include="Resource\Weapon\weapon_dagger.png" />
+    <Image Include="Resource\Weapon\weapon_double_saber.png" />
+    <Image Include="Resource\Weapon\weapon_grenade_launcher.png" />
+    <Image Include="Resource\Weapon\weapon_handgun.png" />
+    <Image Include="Resource\Weapon\weapon_knuckle.png" />
+    <Image Include="Resource\Weapon\weapon_laser_cannon.png" />
+    <Image Include="Resource\Weapon\weapon_longbow.png" />
+    <Image Include="Resource\Weapon\weapon_machinegun.png" />
+    <Image Include="Resource\Weapon\weapon_rcsm.png" />
+    <Image Include="Resource\Weapon\weapon_rifle.png" />
+    <Image Include="Resource\Weapon\weapon_rod.png" />
+    <Image Include="Resource\Weapon\weapon_saber.png" />
+    <Image Include="Resource\Weapon\weapon_shotgun.png" />
+    <Image Include="Resource\Weapon\weapon_slicer.png" />
+    <Image Include="Resource\Weapon\weapon_spear.png" />
+    <Image Include="Resource\Weapon\weapon_sword.png" />
+    <Image Include="Resource\Weapon\weapon_tcsm.png" />
+    <Image Include="Resource\Weapon\weapon_twin_claws.png" />
+    <Image Include="Resource\Weapon\weapon_twin_daggers.png" />
+    <Image Include="Resource\Weapon\weapon_twin_handgun.png" />
+    <Image Include="Resource\Weapon\weapon_twin_sabers.png" />
+    <Image Include="Resource\Weapon\weapon_wand.png" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

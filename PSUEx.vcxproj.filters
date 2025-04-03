@@ -1,0 +1,604 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\PSUMemory">
+      <UniqueIdentifier>{1a29e38c-e752-45bd-889a-177d210f2ec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PSUMemory\Patch">
+      <UniqueIdentifier>{c4f939a7-7dab-4994-bc74-5cb4fb4e774e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PSUFunction">
+      <UniqueIdentifier>{9be175d7-1b48-414c-8a27-26316c951bf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PSUOverlay">
+      <UniqueIdentifier>{20762ae6-8395-4cf2-8020-c7c1dcb0932e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PSUOverlay">
+      <UniqueIdentifier>{2e476b1a-1272-4922-8aa6-107a4f1d0b2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Detours">
+      <UniqueIdentifier>{c4bec404-9aac-4eca-9510-7797e7ce2942}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ImGui">
+      <UniqueIdentifier>{f78e8644-5928-465d-b001-990bd0d248c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ImGui\Backend">
+      <UniqueIdentifier>{726b1e5a-fff8-4bea-a09e-9bc390dccb4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PSUOverlay\Interface">
+      <UniqueIdentifier>{f668f9b4-b55c-4213-bd8b-90f1f2b3b142}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PSUOverlay\Interface">
+      <UniqueIdentifier>{a7dee42e-1f86-4927-937a-8d7246ee7af1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PSUStructs">
+      <UniqueIdentifier>{5fb3f002-4964-4128-b0d0-b4d33c61d9b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PSUModManager">
+      <UniqueIdentifier>{d00cd4c5-6707-4bf6-aad8-443801c6cd17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PSUStructs">
+      <UniqueIdentifier>{851932ab-6584-49f2-ab88-1f6e69cb0d82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Item">
+      <UniqueIdentifier>{5d508e95-231f-4023-940e-2defb310cc36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Weapon">
+      <UniqueIdentifier>{702b5b2a-7d3b-4990-8f97-be6c02cfcccd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUEx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUDetour\Hook_CreateWindow.hpp">
+      <Filter>Header Files\PSUFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUIni.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUDetour\Hook_0076E330_Audio_PlayADX.hpp">
+      <Filter>Header Files\PSUFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUMemory\PatchRegistry.h">
+      <Filter>Header Files\PSUMemory</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUMemory\Memory.hpp">
+      <Filter>Header Files\PSUMemory</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUMemory\Patch\MinimapPatch.hpp">
+      <Filter>Header Files\PSUMemory\Patch</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUMemory\Patch\ResolutionPatch.hpp">
+      <Filter>Header Files\PSUMemory\Patch</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUMemory\Patch\FastStartPatch.hpp">
+      <Filter>Header Files\PSUMemory\Patch</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUMemory\Patch\NoVideoPatch.hpp">
+      <Filter>Header Files\PSUMemory\Patch</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUMemory\Patch\ProfilerPatch.hpp">
+      <Filter>Header Files\PSUMemory\Patch</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUMemory\Patch\FastGrindingPatch.hpp">
+      <Filter>Header Files\PSUMemory\Patch</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUDetour\Hook_EntryPoint.hpp">
+      <Filter>Header Files\PSUFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUDetour\Hook_GetCPUName.hpp">
+      <Filter>Header Files\PSUFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUMemory\Patch\TextSmoothingPatch.hpp">
+      <Filter>Header Files\PSUMemory\Patch</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUMemory\Patch\V1TextureFilter.hpp">
+      <Filter>Header Files\PSUMemory\Patch</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUOverlay\PSUOverlay.h">
+      <Filter>Header Files\PSUOverlay</Filter>
+    </ClInclude>
+    <ClInclude Include="Detours4\detours.h">
+      <Filter>Header Files\Detours</Filter>
+    </ClInclude>
+    <ClInclude Include="Detours4\detver.h">
+      <Filter>Header Files\Detours</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imconfig.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\imgui_internal.h">
+      <Filter>Header Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\backends\imgui_impl_dx9.h">
+      <Filter>Header Files\ImGui\Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGui\backends\imgui_impl_win32.h">
+      <Filter>Header Files\ImGui\Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUOverlay\Interface\IFWinCtrl.h">
+      <Filter>Header Files\PSUOverlay\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUOverlay\Interface\LootDisplay.h">
+      <Filter>Header Files\PSUOverlay\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUStructs\Item.h">
+      <Filter>Header Files\PSUStructs</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUStructs\Vector3F.hpp">
+      <Filter>Header Files\PSUStructs</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUDetour\Hook_004CF9A0.hpp">
+      <Filter>Header Files\PSUFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUOverlay\ImageMng.h">
+      <Filter>Header Files\PSUOverlay</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUDetour\Hook_00814040.hpp">
+      <Filter>Header Files\PSUFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUModManager\ModManager.hpp">
+      <Filter>Header Files\PSUModManager</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUStructs\PSUWorld.hpp">
+      <Filter>Header Files\PSUStructs</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUExConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUDetour\Hook_GameFlags.hpp">
+      <Filter>Header Files\PSUFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUDetour\Hook_0050B790_LogChatMessage.hpp">
+      <Filter>Header Files\PSUFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUOverlay\Interface\ConfigDisplay.h">
+      <Filter>Header Files\PSUOverlay\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUOverlay\Interface\LogDisplay.h">
+      <Filter>Header Files\PSUOverlay\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUDetour\Hook_TItemBulletSlicer.hpp">
+      <Filter>Header Files\PSUFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUDetour\Hook_0074B490_memset32.hpp">
+      <Filter>Header Files\PSUFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUMemory\Patch\ViewDistancePatch.hpp">
+      <Filter>Header Files\PSUMemory\Patch</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUDetour\Hook_UIScale.hpp">
+      <Filter>Header Files\PSUFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUDetour\Hook_InitializeD3D9.hpp">
+      <Filter>Header Files\PSUFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="Json.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUDetour\Hook_TCameraTaskPlay.hpp">
+      <Filter>Header Files\PSUFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUOverlay\Interface\CameraDisplay.h">
+      <Filter>Header Files\PSUOverlay\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUStructs\PSUPlayerData.h">
+      <Filter>Header Files\PSUStructs</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUStructs\Matrix4x4.hpp">
+      <Filter>Header Files\PSUStructs</Filter>
+    </ClInclude>
+    <ClInclude Include="ExceptionHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUDetour\Hook_00774F90.hpp">
+      <Filter>Header Files\PSUFunction</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PSUOverlay\PSUOverlay.cpp">
+      <Filter>Source Files\PSUOverlay</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours4\creatwth.cpp">
+      <Filter>Header Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours4\detours.cpp">
+      <Filter>Header Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours4\disasm.cpp">
+      <Filter>Header Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours4\disolarm.cpp">
+      <Filter>Header Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours4\disolarm64.cpp">
+      <Filter>Header Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours4\disolia64.cpp">
+      <Filter>Header Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours4\disolx64.cpp">
+      <Filter>Header Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours4\disolx86.cpp">
+      <Filter>Header Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours4\image.cpp">
+      <Filter>Header Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="Detours4\modules.cpp">
+      <Filter>Header Files\Detours</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui.cpp">
+      <Filter>Header Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_demo.cpp">
+      <Filter>Header Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_draw.cpp">
+      <Filter>Header Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_tables.cpp">
+      <Filter>Header Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\imgui_widgets.cpp">
+      <Filter>Header Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\backends\imgui_impl_dx9.cpp">
+      <Filter>Header Files\ImGui\Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGui\backends\imgui_impl_win32.cpp">
+      <Filter>Header Files\ImGui\Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="PSUOverlay\Interface\LootDisplay.cpp">
+      <Filter>Source Files\PSUOverlay\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="PSUOverlay\ImageMng.cpp">
+      <Filter>Source Files\PSUOverlay</Filter>
+    </ClCompile>
+    <ClCompile Include="PSUOverlay\Interface\ConfigDisplay.cpp">
+      <Filter>Source Files\PSUOverlay\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="PSUOverlay\Interface\LogDisplay.cpp">
+      <Filter>Source Files\PSUOverlay\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="PSUExConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PSUOverlay\Interface\CameraDisplay.cpp">
+      <Filter>Source Files\PSUOverlay\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="PSUStructs\PSUPlayerData.cpp">
+      <Filter>Source Files\PSUStructs</Filter>
+    </ClCompile>
+    <ClCompile Include="ExceptionHandler.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resource\element_dark.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource\element_fire.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource\element_ground.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource\element_ice.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource\element_light.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource\element_lightning.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource\element_neutral.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource\star_03.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource\star_02.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource\star_00.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource\star_01.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource\star_04.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource\star_05.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource\element_blank.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_axe.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_card.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_claw.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_crossbow.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_dagger.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_double_saber.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_grenade_launcher.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_handgun.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_knuckle.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_laser_cannon.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_longbow.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_machinegun.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_rcsm.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_rifle.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_rod.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_saber.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_shotgun.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_slicer.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_spear.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_sword.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_tcsm.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_twin_claws.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_twin_daggers.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_twin_handgun.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_twin_sabers.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Weapon\weapon_wand.png">
+      <Filter>Resource Files\Weapon</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_board.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_cast_01.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_cast_02.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_cast_03.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_cast_04.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_cast_05.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_cast_06.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_clothing_01.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_clothing_02.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_clothing_03.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_clothing_04.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_clothing_05.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_clothing_06.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_clothing_XX.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_consumable_01.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_consumable_02.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_consumable_03.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_consumable_04.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_consumable_05.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_consumable_06.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_decoration.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_gift.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_grinder.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_line_shield.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_material_0A.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_material_0B.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_material_0C.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_material_0D.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_material_0E.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_material_0F.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_material_01.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_material_02.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_material_03.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_material_04.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_material_05.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_material_06.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_material_07.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_material_08.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_material_09.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_material_10.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_meseta.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_photon_art_disk.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_pm_device.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_consumable_07.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_tool_01.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_tool_02.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_tool_03.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_tool_04.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_trap_01.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_trap_02.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_unit_01.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_unit_02.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_unit_03.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_unit_04.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_xx.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+    <Image Include="Resource\Item\item_boost.png">
+      <Filter>Resource Files\Item</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
