@@ -13,7 +13,6 @@ It enhances and extends the original game by injecting new features and improvem
 - Extended Resolution support, along with FOV correction and more.
 - Floor Reader for extended item loot information.
 - Camera Controls for distance, height, and rotation speed.
-- Hooking & extending PSU engine behavior
 
 ---
 
