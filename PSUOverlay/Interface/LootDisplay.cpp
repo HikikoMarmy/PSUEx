@@ -743,9 +743,9 @@ bool LootDisplay::CheckDisplayFilter( s_loot_entity *entity )
 		return false;
 	}
 
-	auto rarity = entity->item.var_data.generic.rarity + 1;
+	auto rarity = entity->item.var_data.generic.rarity;
 
-	if( rarity <= config.m_minimumRarity || rarity > config.m_maximumRarity )
+	if( rarity < config.m_minimumRarity || rarity > config.m_maximumRarity )
 	{
 		return false;
 	}
