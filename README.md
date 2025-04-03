@@ -3,6 +3,8 @@
 **PSUEx** is a work-in-progress DLL extension for **Phantasy Star Universe (PSU) Ver. 14.30**.  
 It enhances and extends the original game by injecting new features and improvements.
 
+> **Note:** This project is still in early development. Expect breaking changes and bugs along the way.
+
 ---
 
 ## 🔧 Features
@@ -12,8 +14,6 @@ It enhances and extends the original game by injecting new features and improvem
 - Floor Reader for extended item loot information.
 - Camera Controls for distance, height, and rotation speed.
 - Hooking & extending PSU engine behavior
-
-> **Note:** This project is still in early development. Expect breaking changes and bugs along the way.
 
 ---
 
