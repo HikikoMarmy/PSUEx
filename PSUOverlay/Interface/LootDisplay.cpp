@@ -568,7 +568,23 @@ void LootDisplay::DrawHoverItem( s_loot_entity *entity )
 		case meseta:
 		{
 			item_name = "Meseta";
-			quantity = data.quantity;
+			quantity = 0;
+
+			// We can't get quantity from generic data, so we must parse it from the name.
+			std::wstring_view name = entity->item.name;
+			if( auto pos = name.find( L" x" ); pos != std::wstring_view::npos )
+			{
+				std::wstring_view number = name.substr( pos + 2 );
+
+				std::string digits;
+				for( wchar_t ch : number )
+				{
+					if( !iswdigit( ch ) ) break;
+					digits += static_cast< char >( ch );
+				}
+
+				std::from_chars_result result = std::from_chars( digits.data(), digits.data() + digits.size(), quantity );
+			}
 		} break;
 
 		default:
