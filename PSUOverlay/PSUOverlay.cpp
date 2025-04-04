@@ -161,12 +161,7 @@ void PSUOverlay::ReleaseWindow()
 
 LRESULT WINAPI PSUOverlay::WndProc( const HWND hWnd, const UINT msg, const WPARAM wParam, const LPARAM lParam )
 {
-	//Added INSERT as the key to toggle m_bDisplay
-	if (GetAsyncKeyState(VK_INSERT) & 1) m_bDisplay ^= 1;
-
-	//m_bDisplay was false always, so this wasn't working (This enables UI interaction)
-	//If you don't want the toggle, you can just make m_bDisplay always true, or remove it from the below if statement
-	if( /*m_bDisplay && */ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam) )
+	if( ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam) )
 	{
 		ImGui::GetIO().MouseDrawCursor = ImGui::IsWindowHovered( ImGuiHoveredFlags_AnyWindow );
 		return true;
@@ -174,7 +169,7 @@ LRESULT WINAPI PSUOverlay::WndProc( const HWND hWnd, const UINT msg, const WPARA
 	
 	if( m_bInitialized )
 	{
-		ImGui::GetIO().MouseDrawCursor = false;// ImGui::IsWindowHovered( ImGuiHoveredFlags_AnyWindow );
+		ImGui::GetIO().MouseDrawCursor = false;
 	}
 	
 	if( msg == WM_CLOSE )
@@ -375,6 +370,11 @@ HRESULT APIENTRY PSUOverlay::Hook_EndScene( LPDIRECT3DDEVICE9 pDevice )
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 	{
+		if( ImGui::IsKeyPressed( ImGuiKey_Insert, false ) )
+		{
+			m_bDisplay ^= 1;
+		}
+
 		if( m_bDisplay )
 		{
 			RenderMenuBar();
