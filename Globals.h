@@ -10,6 +10,12 @@ namespace Global
 	inline HWND hWnd;
 	inline int screenWidth;
 	inline int screenHeight;
+	inline int windowPosX;
+	inline int windowPosY;
+	inline int monitorLeft;
+	inline int monitorTop;
+	inline int monitorRight;
+	inline int monitorBottom;
 
 	inline LPDIRECT3DDEVICE9 pD3DDevice;
 
