@@ -89,8 +89,8 @@ void CameraDisplay::Render()
         ImGui::Text( "Refocus Settings" );
         ImGui::Indent();
         ImGui::SliderFloat( "Refocus Speed", &config.m_refocusSpeed, 0.1f, 1.0f, "%.2f" );
-        ImGui::SliderFloat( "Horizontal Speed", &config.m_rotationSpeedH, 0.2f, 2.0f, "%.2f" );
-        ImGui::SliderFloat( "Vertical Speed", &config.m_rotationSpeedV, 0.2f, 2.0f, "%.2f" );
+        ImGui::SliderFloat( "Horizontal Speed", &config.m_rotationSpeedH, 0.2f, 5.0f, "%.2f" );
+        ImGui::SliderFloat( "Vertical Speed", &config.m_rotationSpeedV, 0.2f, 5.0f, "%.2f" );
         ImGui::SliderFloat( "Turn Acceleration", &config.m_turnAcceleration, 0.1f, 1.0f, "%.2f" );
         ImGui::Unindent();
 
