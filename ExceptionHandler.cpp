@@ -50,6 +50,12 @@ bool WriteMinidump( EXCEPTION_POINTERS *pExceptionPointers, const std::string &d
 // The crash handler function
 LONG WINAPI GlobalCrashHandler( EXCEPTION_POINTERS *pExceptionPointers )
 {
+	// Mayhaps the exception handler was a bit too aggressive? Only handle access violations.
+    if( pExceptionPointers->ExceptionRecord->ExceptionCode != EXCEPTION_ACCESS_VIOLATION )
+    {
+        return EXCEPTION_CONTINUE_SEARCH; // Let the game handle it
+    }
+
     int response = MessageBoxA( nullptr,
                                 "Oops! PSUEx detected a crash in the game.\n\nWould you like to save a crash report to help us figure out what went wrong?",
                                 "Game Crash Detected",
@@ -77,7 +83,8 @@ LONG WINAPI GlobalCrashHandler( EXCEPTION_POINTERS *pExceptionPointers )
         }
     }
 
-    return EXCEPTION_EXECUTE_HANDLER;
+    //return EXCEPTION_EXECUTE_HANDLER;
+    return EXCEPTION_CONTINUE_SEARCH;
 }
 
 // Call this during DLL initialization
