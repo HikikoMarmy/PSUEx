@@ -9,7 +9,7 @@
 
 namespace HardwareInfo
 {
-	typedef bool *( __cdecl *function775990 )( ULONG_PTR ProcessAffinityMask );
+	typedef bool *( __cdecl *function775990 )( ULONG_PTR *ProcessAffinityMask );
 	function775990 pOriginal775990 = reinterpret_cast< function775990 >( 0x00775990 );
 
 	typedef DWORD *( __cdecl *function775870 )( int a1, int a2 );
@@ -20,6 +20,11 @@ namespace HardwareInfo
 
 	bool GetCPUName( ULONG_PTR *processAffinityMask )
 	{
+		if( PSUIni::Get().ReadInt( L"custom", L"CPU_AFFINITY_FIX", 1 ) == 0 )
+		{
+			return pOriginal775990( processAffinityMask );
+		}
+
 		if( processAffinityMask == NULL )
 			return false;
 
@@ -73,7 +78,7 @@ namespace HardwareInfo
 			}
 
 			// Restore original CPU affinity so the client doesn't lag out c:
-			SetProcessAffinityMask( hProcess, originalAffinityMask );
+			//SetProcessAffinityMask( hProcess, originalAffinityMask );
 		}
 
 		if( cpuInfoBuffer == NULL )
