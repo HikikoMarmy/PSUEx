@@ -27,6 +27,13 @@ PSUPlayer &PSUPlayer::Get()
 	else [[likely]]
 	{
 		memoryInstance = PSUMemory::ReadAbsolutePtr< PSUPlayer >( ptr_to_player );
+
+		if( !memoryInstance )
+		{
+			printf( "Failed to read player data pointer.\n" );
+			return dummyInstance;
+		}
+
 		return *memoryInstance;
 	}
 }
