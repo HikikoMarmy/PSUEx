@@ -60,13 +60,27 @@ public:
     template <typename T = void>
     static T *ReadPtr( uintptr_t address )
     {
-        return reinterpret_cast< T * >( baseAddress + address );
+        //return reinterpret_cast< T * >( baseAddress + address );
+        T *ptr = reinterpret_cast< T * >( baseAddress + address );
+        if( !IsValidPointer( ptr ) )
+        {
+            printf( "Invalid Pointer Read: 0x%08X\n", static_cast< unsigned int >( address ) );
+            return nullptr;
+        }
+        return ptr;
     }
 
     template <typename T = void>
     static T *ReadAbsolutePtr( uintptr_t address )
     {
-        return reinterpret_cast< T * >( address );
+        //return reinterpret_cast< T * >( address );
+        T *ptr = reinterpret_cast< T * >( address );
+        if( !IsValidPointer( ptr ) )
+        {
+            printf( "Invalid Absolute Pointer Read: 0x%08X\n", static_cast< unsigned int >( address ) );
+            return nullptr;
+        }
+        return ptr;
     }
 
     template <typename T>
