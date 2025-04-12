@@ -129,11 +129,11 @@ void PSUOverlay::ReleaseDirectX()
 	{
 		DetourUpdateThread( GetCurrentThread() );
 		DetourDetach( &( PVOID & )m_pOriginalEndScene, Hook_EndScene );
-		DetourDetach( &( PVOID & )m_pOriginalReset, Hook_Reset );
-		DetourDetach( &( PVOID & )m_pOriginalDrawIndexedPrimitive, Hook_DrawIndexedPrimitive );
-		DetourDetach( &( PVOID & )m_pOriginalPresent, Hook_Present );
+		//DetourDetach( &( PVOID & )m_pOriginalReset, Hook_Reset );
+		//DetourDetach( &( PVOID & )m_pOriginalDrawIndexedPrimitive, Hook_DrawIndexedPrimitive );
+		//DetourDetach( &( PVOID & )m_pOriginalPresent, Hook_Present );
 		//DetourDetach( &( PVOID & )m_pOriginalPresentEx, Hook_PresentEx );
-		DetourDetach( &( PVOID & )m_pOriginalCreateAdditionalSwapChain, Hook_CreateAdditionalSwapChain );
+		//DetourDetach( &( PVOID & )m_pOriginalCreateAdditionalSwapChain, Hook_CreateAdditionalSwapChain );
 		//DetourDetach( &( PVOID & )m_pOriginalSwapchainPresent, Hook_Swapchain_Present );
 	}
 	DetourTransactionCommit();
@@ -227,17 +227,17 @@ HRESULT APIENTRY PSUOverlay::Hook_CreateDevice( IDirect3D9 *pD3D, UINT Adapter, 
 			DetourTransactionBegin();
 			DetourUpdateThread( GetCurrentThread() );
 
-			if( DetourAttach( &( PVOID & )m_pOriginalPresent, Hook_Present ) != NO_ERROR )
+			/*if( DetourAttach(&( PVOID & )m_pOriginalPresent, Hook_Present) != NO_ERROR )
 			{
 				printf( "Failed to hook Present!\n" );
-			}
+			}*/
 
 			if( DetourAttach( &( PVOID & )m_pOriginalEndScene, Hook_EndScene ) != NO_ERROR )
 			{
 				printf( "Failed to hook EndScene!\n" );
 			}
 
-			if( DetourAttach( &( PVOID & )m_pOriginalReset, Hook_Reset ) != NO_ERROR )
+			/*if( DetourAttach(&( PVOID & )m_pOriginalReset, Hook_Reset) != NO_ERROR )
 			{
 				printf( "Failed to hook Reset!\n" );
 			}
@@ -280,7 +280,7 @@ HRESULT APIENTRY PSUOverlay::Hook_CreateDevice( IDirect3D9 *pD3D, UINT Adapter, 
 			if( DetourAttach( &( PVOID & )m_pOriginalSetRenderTarget, Hook_SetRenderTarget ) != NO_ERROR )
 			{
 				printf( "Failed to hook SetRenderTarget!\n" );
-			}
+			}*/
 
 			HRESULT result = DetourTransactionCommit();
 			if( result != NO_ERROR )
