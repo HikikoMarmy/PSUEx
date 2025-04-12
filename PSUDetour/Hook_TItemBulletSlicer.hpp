@@ -36,7 +36,6 @@ namespace TItemBulletSlicer
 		pOriginal_EffectFrame( thisPtr );
 	}
 
-	// Hooked function
 	int __fastcall Hook_sub_4E58F0( void *thisPtr )
 	{
 		printf( "[Hook] SLICER_CRASH_sub_4E58F0 called! thisPtr: %p\n", thisPtr );
@@ -53,7 +52,7 @@ namespace TItemBulletSlicer
 		int *ptr_28 = *( int ** )( ( uintptr_t )thisPtr + 0x28 );
 		if( !ptr_28 )
 		{
-			printf( "[TItemBulletSlicer::EffectFrame] Skipping function due to NULL *(this + 0x28)!\n" );
+			printf( "[TItemBulletSlicer::4E58F0] Skipping function due to NULL *(this + 0x28)!\n" );
 			return 0;
 		}
 
