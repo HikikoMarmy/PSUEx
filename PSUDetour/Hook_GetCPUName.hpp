@@ -20,7 +20,7 @@ namespace HardwareInfo
 
 	bool GetCPUName( ULONG_PTR *processAffinityMask )
 	{
-		if( PSUIni::Get().ReadInt( L"custom", L"CPU_AFFINITY_FIX", 1 ) == 0 )
+		if( PSUIni::Get().ReadInt( L"custom", L"CPU_AFFINITY_FIX", 0 ) == 0 )
 		{
 			return pOriginal775990( processAffinityMask );
 		}
@@ -78,7 +78,7 @@ namespace HardwareInfo
 			}
 
 			// Restore original CPU affinity so the client doesn't lag out c:
-			//SetProcessAffinityMask( hProcess, originalAffinityMask );
+			SetProcessAffinityMask( hProcess, originalAffinityMask );
 		}
 
 		if( cpuInfoBuffer == NULL )
