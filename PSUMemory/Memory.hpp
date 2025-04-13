@@ -137,7 +137,6 @@ public:
         }
     }
 
-private:
     static bool IsValidPointer( const void *ptr )
     {
         MEMORY_BASIC_INFORMATION mbi;
