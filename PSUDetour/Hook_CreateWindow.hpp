@@ -46,7 +46,11 @@ HWND WINAPI Hook_CreateWindowExA
 			dwStyle |= WS_SIZEBOX | WS_MAXIMIZEBOX;
 		}
 
-		RECT rc = { 0, 0, Global::screenWidth, Global::screenHeight };
+		RECT rc = { 
+			0, 0,
+			static_cast< LONG >( Global::screenWidth ),
+			static_cast< LONG >( Global::screenHeight )
+		};
 
 		AdjustWindowRectEx( &rc, dwStyle, 0, dwExStyle );
 
@@ -59,8 +63,8 @@ HWND WINAPI Hook_CreateWindowExA
 		dwExStyle = 0;
 		dwStyle = WS_POPUP;
 
-		nWidth = Global::screenWidth;
-		nHeight = Global::screenHeight;
+		nWidth = static_cast< LONG >( Global::screenWidth );
+		nHeight = static_cast< LONG >( Global::screenHeight );
 	}
 
 	auto hWnd = Original_CreateWindowExA
