@@ -22,6 +22,10 @@ public:
 	{
 	}
 
+	~Vector3F()
+	{
+	}
+
 	Vector3F &operator=( const Vector3F &other )
 	{
 		x = other.x;
@@ -122,10 +126,6 @@ public:
 		Vector3F forward = targetPosition - *this;
 		forward.Normalize();
 		return forward;
-	}
-
-	~Vector3F()
-	{
 	}
 
 	float x, y, z;
