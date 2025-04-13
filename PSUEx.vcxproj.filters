@@ -58,6 +58,9 @@
     <Filter Include="Resource Files\Weapon">
       <UniqueIdentifier>{702b5b2a-7d3b-4990-8f97-be6c02cfcccd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Misc">
+      <UniqueIdentifier>{2e1cff3e-d40c-43f0-afb7-28d08b254170}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -204,12 +207,6 @@
     <ClInclude Include="PSUOverlay\Interface\CameraDisplay.h">
       <Filter>Header Files\PSUOverlay\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="Constants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Globals.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PSUStructs\PSUPlayerData.h">
       <Filter>Header Files\PSUStructs</Filter>
     </ClInclude>
@@ -221,6 +218,21 @@
     </ClInclude>
     <ClInclude Include="PSUDetour\Hook_00774F90.hpp">
       <Filter>Header Files\PSUFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc\Constants.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc\Globals.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc\MathUtil.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Misc\StringUtil.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUStructs\Vector2F.hpp">
+      <Filter>Header Files\PSUStructs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

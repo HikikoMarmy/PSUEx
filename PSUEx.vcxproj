@@ -108,7 +108,7 @@
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;PSUEX_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -165,18 +165,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Constants.h" />
     <ClInclude Include="Detours4\detours.h" />
     <ClInclude Include="Detours4\detver.h" />
     <ClInclude Include="ExceptionHandler.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="Globals.h" />
     <ClInclude Include="ImGui\backends\imgui_impl_dx9.h" />
     <ClInclude Include="ImGui\backends\imgui_impl_win32.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
     <ClInclude Include="ImGui\imgui_internal.h" />
     <ClInclude Include="Json.hpp" />
+    <ClInclude Include="Misc\Constants.h" />
+    <ClInclude Include="Misc\Globals.h" />
+    <ClInclude Include="Misc\MathUtil.h" />
+    <ClInclude Include="Misc\StringUtil.h" />
     <ClInclude Include="PSUDetour\Hook_004CF9A0.hpp" />
     <ClInclude Include="PSUDetour\Hook_0050B790_LogChatMessage.hpp" />
     <ClInclude Include="PSUDetour\Hook_0074B490_memset32.hpp" />
@@ -216,6 +218,7 @@
     <ClInclude Include="PSUStructs\Item.h" />
     <ClInclude Include="PSUStructs\Matrix4x4.hpp" />
     <ClInclude Include="PSUStructs\PSUPlayerData.h" />
+    <ClInclude Include="PSUStructs\Vector2F.hpp" />
     <ClInclude Include="PSUStructs\Vector3F.hpp" />
     <ClInclude Include="PSUStructs\PSUWorld.hpp" />
     <ClInclude Include="resource.h" />
