@@ -1,4 +1,4 @@
-#include "../Globals.h"
+#include "../Misc/Globals.h"
 
 #include "../PSUExConfig.h"
 #include "PSUOverlay.h"

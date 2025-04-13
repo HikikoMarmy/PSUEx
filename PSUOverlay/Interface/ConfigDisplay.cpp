@@ -2,7 +2,7 @@
 #include <algorithm>
 
 #include "ConfigDisplay.h"
-#include "../Globals.h"
+#include "../Misc/Globals.h"
 #include "../PSUExConfig.h"
 #include "../PSUStructs/Item.h"
 

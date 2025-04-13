@@ -1,6 +1,6 @@
 #include "CameraDisplay.h"
-#include "../Globals.h"
-#include "../Constants.h"
+#include "../Misc/Globals.h"
+#include "../Misc/Constants.h"
 #include "../PSUExConfig.h"
 
 CameraDisplay::CameraDisplay() : IFWinCtrl( "CameraDisplay" )
