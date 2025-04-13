@@ -4,11 +4,15 @@
 #include <mutex>
 
 #include "IFWinCtrl.h"
-#include "..\PSUStructs\Item.h"
-#include "..\PSUStructs\Vector3F.hpp"
-#include "..\PSUStructs\Matrix4x4.hpp"
 
-#include "..\ImageMng.h"
+#include "../ImageMng.h"
+#include "../PSUExConfig.h"
+
+#include "../PSUStructs/Item.h"
+#include "../PSUStructs/Vector2F.hpp"
+#include "../PSUStructs/Vector3F.hpp"
+#include "../PSUStructs/Matrix4x4.hpp"
+#include "../PSUStructs/PSUPlayerData.h"
 
 class LootDisplay : public IFWinCtrl
 {
@@ -232,6 +236,25 @@ private:
 		uint32_t _mdl_ptr2;
 	};
 
+	struct s_cached_item {
+
+		Vector3F position;
+		float_t distance;
+
+		char name[ 24 ];
+		psu_item_id item_id;
+		uint32_t unique_id;
+		uint32_t quantity;
+		uint8_t element, percent;
+		uint8_t rarity, rank;
+
+		sptr_image icon;
+	};
+	std::array< s_cached_item, 50 > m_cachedItemData;
+
+	int32_t m_itemCount;
+	std::chrono::steady_clock::time_point m_lastCacheUpdate;
+
 	struct s_icon_text_pair {
 		sptr_image icon;
 		std::string text;
@@ -239,8 +262,8 @@ private:
 	};
 
 	struct s_hover_draw_param {
-		ImVec2 centerPos;
-		ImVec2 screenPos;
+		Vector2F centerPos;
+		Vector2F screenPos;
 		ImVec2 textSize;
 		std::string itemName;
 		std::vector<s_icon_text_pair> iconTextPairs;
@@ -256,35 +279,33 @@ private:
 	std::unordered_map< int32_t, Vector3F > m_errorItemList;
 	int32_t m_errorItemPass;
 
+	const PSUPlayer *m_player = nullptr;
+	Config::s_loot *m_lootConfig = nullptr;
+
 private:
-	void Display_Item_Weapon( s_loot_entity *entity );
-	void Display_Item_Lineshield( s_loot_entity *entity );
-	void Display_Item_Misc( s_loot_entity *entity );
+	void RefreshCachedItemData();
+
+	bool CheckDisplayFilter( s_cached_item *entity );
+	void Display_Item_Weapon( s_cached_item *entity );
+	void Display_Item_Lineshield( s_cached_item *entity );
+	void Display_Item_Misc( s_cached_item *entity );
+	void DrawHoverItem( s_cached_item *entity );
 
 	sptr_image GetItemIcon( const s_loot_entity *entity );
 	sptr_image GetConsumableIcon( const s_loot_entity *entity );
 
-	void DrawHoverItem( s_loot_entity *entity );
 	void DrawTextShadowed(
 		ImDrawList *drawList,
-		const ImVec2 &pos,
+		const Vector2F &pos,
 		const ImColor &textColor,
 		const ImColor &shadowColor,
 		const std::string &text,
 		float fontScale = 1.0f,
-		const ImVec2 &shadowOffset = ImVec2( 1.0f, 1.0f )
+		const Vector2F &shadowOffset = Vector2F( 1.0f, 1.0f )
 	);
 
 	void DrawIconsBelow( s_hover_draw_param &params );
-
-	bool CheckDisplayFilter( s_loot_entity *entity );
 	void TryFixErrorItem( s_loot_entity *entity );
-
-	bool ToScreenSpace( const Vector3F &worldPos, ImVec2 &screenPos );
-	bool ToScreenSpaceMinimap( const Vector3F &worldPos, ImVec2 &screenPos );	// Will get the minimap matrix one day.
-
-	// This can definitely go into a utility file later.
-	std::string WideToUTF8( const wchar_t *wideString );
 
 public:
 	LootDisplay( const LootDisplay & ) = delete;

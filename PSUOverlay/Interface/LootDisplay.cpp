@@ -1,12 +1,11 @@
-
 #include <algorithm>
 #include "LootDisplay.h"
-#include "../Globals.h"
-#include "../PSUExConfig.h"
-#include "../../PSUStructs/PSUWorld.hpp"
-#include "../../PSUStructs/PSUPlayerData.h"
-#include "../../PSUMemory/Memory.hpp"
-#include "..\Detours4\detours.h"
+
+#include "../Misc/Globals.h"
+#include "../Misc/StringUtil.h"
+#include "../Misc/MathUtil.h"
+#include "../PSUStructs/PSUWorld.hpp"
+#include "../PSUMemory/Memory.hpp"
 
 typedef char( __cdecl *functionLootItemSpawn )( void *a1 );
 functionLootItemSpawn pOriginalLootItemSpawn = reinterpret_cast< functionLootItemSpawn >( 0x004CF7C0 );
@@ -50,10 +49,14 @@ DWORD *__fastcall Hook_LootItemDelete( void *a1 )
 
 LootDisplay::LootDisplay() : IFWinCtrl( "LootDisplay" )
 {
-	auto &config = Config::Get().loot_reader;
-	this->m_bEnabled = config.m_windowInfo.m_enabled;
+	this->m_bEnabled = Config::Get().loot_reader.m_windowInfo.m_enabled;
 	this->m_errorItemPass = 0;
 	this->m_errorItemList.clear();
+
+	m_itemCount = 0;
+	m_lastCacheUpdate = std::chrono::high_resolution_clock::now();
+
+	std::memset( &m_cachedItemData[ 0 ], 0, sizeof(m_cachedItemData));
 
 	// Sooner or later these need to work, but for now they're kinda fucked.
 	//DetourTransactionBegin();
@@ -71,10 +74,8 @@ LootDisplay::~LootDisplay()
 
 void LootDisplay::SetInitialWindowPosition()
 {
-	auto &config = Config::Get().loot_reader;
-
-	auto x = config.m_windowInfo.m_position.x;
-	auto y = config.m_windowInfo.m_position.y;
+	auto x = m_lootConfig->m_windowInfo.m_position.x;
+	auto y = m_lootConfig->m_windowInfo.m_position.y;
 
 	if( x < 0 || x > Global::screenWidth )
 	{
@@ -87,41 +88,50 @@ void LootDisplay::SetInitialWindowPosition()
 	}
 
 	ImGui::SetNextWindowPos( ImVec2( x, y ), ImGuiCond_FirstUseEver );
-	ImGui::SetNextWindowSize( config.m_windowInfo.m_size, ImGuiCond_FirstUseEver );
+	ImGui::SetNextWindowSize( m_lootConfig->m_windowInfo.m_size, ImGuiCond_FirstUseEver );
 }
 
 void LootDisplay::Render()
 {
-	auto &config = Config::Get().loot_reader;
-	config.m_windowInfo.m_enabled = this->m_bEnabled;
+	m_lootConfig = &Config::Get().loot_reader;
+	m_lootConfig->m_windowInfo.m_enabled = this->m_bEnabled;
 
-	if( !this->m_bEnabled ) return;
+	if( !this->m_bEnabled )
+		return;
 
-	SetInitialWindowPosition();
+	m_player = &PSUPlayer::Get();
 
-	auto &player = PSUPlayer::Get();
+	if( !m_player )
+		return;
 	
-	if( PSUWorld::GetType( player.quest_id ) != PSUWorld::WorldType::Mission )
+	if( PSUWorld::GetType( m_player->quest_id ) != PSUWorld::WorldType::Mission )
 	{
 		// Temporary. Should really be checked on the item delete hook, if it ever works.
 		if( m_errorItemList.size() > 0 )
-		{
 			m_errorItemList.clear();
+
+		if( m_itemCount > 0 )
+		{
+			std::memset( &m_cachedItemData[ 0 ], 0, sizeof( m_cachedItemData ) );
+			m_itemCount = 0;
 		}
 
-		if( config.m_displayMission )
-		{
+		if( m_lootConfig->m_displayMission )
 			return;
-		}
+	}
+	else
+	{
+		RefreshCachedItemData();
 	}
 
-	auto ptr_table = PSUMemory::ReadMemory< uintptr_t >( ptr_to_ptr_table );
+	SetInitialWindowPosition();
+	
 
 	ImGui::Begin( "Loot Display", &m_bEnabled );
 	{
 		// Capture current position
-		config.m_windowInfo.m_position = ImGui::GetWindowPos();
-		config.m_windowInfo.m_size = ImGui::GetWindowSize();
+		m_lootConfig->m_windowInfo.m_position = ImGui::GetWindowPos();
+		m_lootConfig->m_windowInfo.m_size = ImGui::GetWindowSize();
 
 		static ImGuiTableFlags flags = ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable |
 			ImGuiTableFlags_BordersOuter | ImGuiTableFlags_BordersV |
@@ -131,10 +141,10 @@ void LootDisplay::Render()
 		int visibleColumns = 0;
 		for( int i = 0; i < enum_column_type::max_number_of_columns; i++ )
 		{
-			if( config.m_columnVisibility[ i ] ) visibleColumns++;
+			if( m_lootConfig->m_columnVisibility[ i ] ) visibleColumns++;
 		}
 
-		if( !ptr_table || visibleColumns == 0 )
+		if(  visibleColumns == 0 )
 		{
 			ImGui::End();
 			return;
@@ -147,27 +157,49 @@ void LootDisplay::Render()
 			constexpr float weight_name = 4.0f;
 
 			// Setup columns based on visibility settings
-			//if( config.m_columnVisibility[ enum_column_type::rarity ] )
+			//if( m_lootConfig->m_columnVisibility[ enum_column_type::rarity ] )
 				ImGui::TableSetupColumn( "Rarity", ImGuiTableColumnFlags_WidthStretch, weight_small );
 
-			//if( config.m_columnVisibility[ enum_column_type::name ] )
+			//if( m_lootConfig->m_columnVisibility[ enum_column_type::name ] )
 				ImGui::TableSetupColumn( "Name", ImGuiTableColumnFlags_WidthStretch, weight_name );
 
-			//if( config.m_columnVisibility[ enum_column_type::element ] )
+			//if( m_lootConfig->m_columnVisibility[ enum_column_type::element ] )
 				ImGui::TableSetupColumn( "Ele/%", ImGuiTableColumnFlags_WidthStretch, weight_small );
 
-			//if( config.m_columnVisibility[ enum_column_type::distance ] )
+			//if( m_lootConfig->m_columnVisibility[ enum_column_type::distance ] )
 				ImGui::TableSetupColumn( "Dist.", ImGuiTableColumnFlags_WidthStretch, weight_small );
 
 			ImGui::TableHeadersRow();
 
-			if( ptr_table != 0 )
+			for( int i = 0; i < m_itemCount; i++ )
 			{
-				uintptr_t ptr_to_begin = PSUMemory::ReadAbsoluteMemory< uintptr_t >( ptr_table + 0x1C );
+				auto &cachedItem = m_cachedItemData[ i ];
 
-				s_loot_entity *entity = PSUMemory::ReadAbsolutePtr< s_loot_entity >( ptr_to_begin );
+				if( CheckDisplayFilter( &cachedItem ) )
+				{
+					switch( cachedItem.item_id.var.item_type )
+					{
+						case enum_item_type::weapon:
+						{
+							Display_Item_Weapon( &cachedItem );
+						} break;
+						case enum_item_type::line_shield:
+						{
+							Display_Item_Lineshield( &cachedItem );
+						} break;
+						default:
+						{
+							Display_Item_Misc( &cachedItem );
+						} break;
+					}
 
-				while( entity != NULL && entity->state != enum_state::invalid )
+					if( m_lootConfig->hover.m_displayItem )
+					{
+						DrawHoverItem( &cachedItem );
+					}
+				}
+				
+				/*while( entity != NULL && entity->state != enum_state::invalid )
 				{
 					if( CheckDisplayFilter( entity ) )
 					{
@@ -189,7 +221,7 @@ void LootDisplay::Render()
 							} break;
 						}
 
-						if( config.hover.m_displayItem )
+						if( m_lootConfig->hover.m_displayItem )
 						{
 							DrawHoverItem( entity );
 						}
@@ -203,7 +235,7 @@ void LootDisplay::Render()
 					}
 
 					entity = entity->next;
-				}
+				}*/
 			}
 			ImGui::EndTable();
 		}
@@ -212,54 +244,139 @@ void LootDisplay::Render()
 	ImGui::End();
 }
 
-void LootDisplay::Display_Item_Weapon( s_loot_entity *entity )
+void LootDisplay::RefreshCachedItemData()
 {
-	auto &data = entity->item.var_data.as_weapon;
-	auto &config = Config::Get().loot_reader;
-	auto &player = PSUPlayer::Get();
-	auto category = entity->item.item_id.var.item_category - 1;
+	auto now = std::chrono::high_resolution_clock::now();
+	if( now - m_lastCacheUpdate < std::chrono::milliseconds( 50 ) )
+		return;
+
+	m_lastCacheUpdate = now;
+
+	auto ptr_table = PSUMemory::ReadMemory< uintptr_t >( ptr_to_ptr_table );
+
+	if( !ptr_table )
+		return;
+
+	auto ptr_to_begin = PSUMemory::ReadAbsoluteMemory< uintptr_t >( ptr_table + 0x1C );
+	auto current = PSUMemory::ReadAbsolutePtr< s_loot_entity >( ptr_to_begin );
+
+	std::memset( &m_cachedItemData[ 0 ], 0, sizeof( m_cachedItemData ) );
+
+	auto index = 0;
+
+	while( current && current->state != enum_state::invalid && index < std::size( m_cachedItemData ) )
+	{
+		if( current->state == enum_state::error )
+		{
+			// Attempt to re-spawn error items.
+			TryFixErrorItem( current );
+			current->state = enum_state::try_spawn;
+		}
+
+		auto item_name = StringUtil::WideToUTF8( current->item.name );
+		auto &cachedItem = m_cachedItemData[ index ];
+		auto &data = current->item.var_data.generic;
+
+		cachedItem.quantity = 0;
+
+		switch( current->item.item_id.var.item_type )
+		{
+			// Only Weapons and Shields have element data.
+			case weapon:
+			case line_shield:
+			{
+				cachedItem.element = data.element;
+				cachedItem.percent = data.element_percent;
+				cachedItem.rank = data.rank;
+			} break;
+
+			case meseta:
+			{
+				item_name = "Meseta";
+				
+				// We can't get quantity from generic data, so we must parse it from the name.
+				std::wstring_view name = current->item.name;
+				if( auto pos = name.find( L" x" ); pos != std::wstring_view::npos )
+				{
+					std::wstring_view number = name.substr( pos + 2 );
+
+					std::string digits;
+					for( wchar_t ch : number )
+					{
+						if( !iswdigit( ch ) ) break;
+						digits += static_cast< char >( ch );
+					}
+
+					std::from_chars_result result = std::from_chars( digits.data(), digits.data() + digits.size(), cachedItem.quantity );
+				}
+			} break;
+
+			default:
+			{
+				cachedItem.quantity = data.quantity;
+			} break;
+		}
+
+		std::strncpy( cachedItem.name, item_name.c_str(), sizeof( cachedItem.name ) - 1 );
+
+		cachedItem.icon = GetItemIcon( current );
+		cachedItem.item_id = current->item.item_id;
+		cachedItem.position = current->position;
+		cachedItem.unique_id = current->item.unique_id;
+		cachedItem.rarity = data.rarity;
+
+		index++;
+		current = current->next;
+	}
+
+	m_itemCount = index;
+}
+
+void LootDisplay::Display_Item_Weapon( s_cached_item *item )
+{
+	auto category = item->item_id.var.item_category - 1;
 
 	if( category < 0 || category >= 27 ) return;
 
-	if( !config.m_weaponTypeFilter[ category ] ) return;
-	if( !config.m_elementFilter[ data.element ] ) return;
+	if( !m_lootConfig->m_weaponTypeFilter[ category ] ) return;
+	if( !m_lootConfig->m_elementFilter[ item->element ] ) return;
 
 	ImGui::TableNextRow();
 
 	// Rarity Column
-	if( config.m_columnVisibility[ enum_column_type::rarity ] )
+	if( m_lootConfig->m_columnVisibility[ enum_column_type::rarity ] )
 	{
 		ImGui::TableSetColumnIndex( 0 );
 
-		auto icon = ImageManager::Get()[ ICON_STAR_00 + data.rank ];
+		auto icon = ImageManager::Get()[ ICON_STAR_00 + item->rank ];
 		ImGui::Image( icon->m_texId, icon->m_size );
 		ImGui::SameLine();
-		ImGui::Text( "%d", data.rarity + 1 );
+		ImGui::Text( "%d", item->rarity + 1 );
 	}
 
 	// Name Column
-	if( config.m_columnVisibility[ enum_column_type::name ] )
+	if( m_lootConfig->m_columnVisibility[ enum_column_type::name ] )
 	{
 		ImGui::TableSetColumnIndex( 1 );
-		auto textColor = config.m_colorItemByElement ? m_color_element[ data.element ] : IM_COL32( 255, 255, 255, 255 );
+		auto textColor = m_lootConfig->m_colorItemByElement ? m_color_element[ item->element ] : IM_COL32( 255, 255, 255, 255 );
 		ImGui::PushStyleColor( ImGuiCol_Text, textColor );
-		ImGui::Text( "%S", entity->item.name );
+		ImGui::Text( "%s", item->name );
 		ImGui::PopStyleColor();
 	}
 
 	// Element Column
-	if( config.m_columnVisibility[ enum_column_type::element ] )
+	if( m_lootConfig->m_columnVisibility[ enum_column_type::element ] )
 	{
 		ImGui::TableSetColumnIndex( 2 );
-		auto textColor = config.m_colorItemByElement ? m_color_element[ data.element ] : IM_COL32( 255, 255, 255, 255 );
+		auto textColor = m_lootConfig->m_colorItemByElement ? m_color_element[ item->element ] : IM_COL32( 255, 255, 255, 255 );
 		ImGui::PushStyleColor( ImGuiCol_Text, textColor );
 
-		if( data.element_percent >= 0 )
+		if( item->percent >= 0 )
 		{
-			auto icon = ImageManager::Get()[ ICON_ELEMENT_NEUTRAL + data.element ];
+			auto icon = ImageManager::Get()[ ICON_ELEMENT_NEUTRAL + item->element ];
 			ImGui::Image( icon->m_texId, icon->m_size );
 			ImGui::SameLine();
-			ImGui::Text( "%d%%", data.element_percent );
+			ImGui::Text( "%d%%", item->percent );
 		}
 		else
 		{
@@ -269,61 +386,57 @@ void LootDisplay::Display_Item_Weapon( s_loot_entity *entity )
 	}
 
 	// Distance Column
-	if( config.m_columnVisibility[ enum_column_type::distance ] )
+	if( m_lootConfig->m_columnVisibility[ enum_column_type::distance ] )
 	{
 		ImGui::TableSetColumnIndex( 3 );
-		ImGui::Text( "%.1fm", player.position.DistanceFrom( entity->position ) / 10.0f );
+		ImGui::Text( "%.1fm", m_player->position.DistanceFrom( item->position ) / 10.0f );
 	}
 }
 
-void LootDisplay::Display_Item_Lineshield( s_loot_entity *entity )
+void LootDisplay::Display_Item_Lineshield( s_cached_item *item )
 {
-	auto &config = Config::Get().loot_reader;
-	auto &player = PSUPlayer::Get();
-	auto &data = entity->item.var_data.as_lineshield;
-
-	if( !config.m_itemTypeFilter[ line_shield ] ) return;
-	if( !config.m_elementFilter[ data.element ] ) return;
+	if( !m_lootConfig->m_itemTypeFilter[ line_shield ] ) return;
+	if( !m_lootConfig->m_elementFilter[ item->element ] ) return;
 
 	ImGui::TableNextRow();
 
 	// Rarity Column
-	if( config.m_columnVisibility[ enum_column_type::rarity ] )
+	if( m_lootConfig->m_columnVisibility[ enum_column_type::rarity ] )
 	{
 		ImGui::TableSetColumnIndex( 0 );
-		auto icon = ImageManager::Get()[ ICON_STAR_00 + data.rank ];
+		auto icon = ImageManager::Get()[ ICON_STAR_00 + item->rank ];
 		ImGui::Image( icon->m_texId, icon->m_size );
 		ImGui::SameLine();
-		ImGui::Text( "%d", data.rarity + 1 );
+		ImGui::Text( "%d", item->rarity + 1 );
 	}
 
 	// Name Column
-	if( config.m_columnVisibility[ enum_column_type::name ] )
+	if( m_lootConfig->m_columnVisibility[ enum_column_type::name ] )
 	{
 		ImGui::TableSetColumnIndex( 1 );
 
-		auto textColor = config.m_colorItemByElement ? m_color_element[ data.element ] : IM_COL32( 255, 255, 255, 255 );
+		auto textColor = m_lootConfig->m_colorItemByElement ? m_color_element[ item->element ] : IM_COL32( 255, 255, 255, 255 );
 		ImGui::PushStyleColor( ImGuiCol_Text, textColor );
 
-		ImGui::Text( "%S", entity->item.name );
+		ImGui::Text( "%s", item->name );
 
 		ImGui::PopStyleColor();
 	}
 
 	// Element Column
-	if( config.m_columnVisibility[ enum_column_type::element ] )
+	if( m_lootConfig->m_columnVisibility[ enum_column_type::element ] )
 	{
 		ImGui::TableSetColumnIndex( 2 );
 
-		auto textColor = config.m_colorItemByElement ? m_color_element[ data.element ] : IM_COL32( 255, 255, 255, 255 );
+		auto textColor = m_lootConfig->m_colorItemByElement ? m_color_element[ item->element ] : IM_COL32( 255, 255, 255, 255 );
 		ImGui::PushStyleColor( ImGuiCol_Text, textColor );
 
-		if( data.element_percent >= 0 )
+		if( item->percent >= 0 )
 		{
-			auto icon = ImageManager::Get()[ ICON_ELEMENT_NEUTRAL + data.element ];
+			auto icon = ImageManager::Get()[ ICON_ELEMENT_NEUTRAL + item->element ];
 			ImGui::Image( icon->m_texId, icon->m_size );
 			ImGui::SameLine();
-			ImGui::Text( "%d%%", data.element_percent );
+			ImGui::Text( "%d%%", item->percent );
 		}
 		else
 		{
@@ -334,19 +447,16 @@ void LootDisplay::Display_Item_Lineshield( s_loot_entity *entity )
 	}
 
 	// Distance Column
-	if( config.m_columnVisibility[ enum_column_type::distance ] )
+	if( m_lootConfig->m_columnVisibility[ enum_column_type::distance ] )
 	{
 		ImGui::TableSetColumnIndex( 3 );
-		ImGui::Text( "%.1fm", player.position.DistanceFrom( entity->position ) / 10.0f );
+		ImGui::Text( "%.1fm", m_player->position.DistanceFrom( item->position ) / 10.0f );
 	}
 }
 
-void LootDisplay::Display_Item_Misc( s_loot_entity *entity )
+void LootDisplay::Display_Item_Misc( s_cached_item *item )
 {
-	auto &player = PSUPlayer::Get();
-	auto &data = entity->item.var_data.generic;
-
-	auto rank = 1 + ( data.rarity / 3 );
+	auto rank = 1 + ( item->rarity / 3 );
 
 	ImGui::TableNextRow();
 	{
@@ -355,11 +465,11 @@ void LootDisplay::Display_Item_Misc( s_loot_entity *entity )
 			auto icon = ImageManager::Get()[ ICON_STAR_00 + rank ];
 			ImGui::Image( icon->m_texId, icon->m_size );
 			ImGui::SameLine();
-			ImGui::Text( "%d", ( data.rarity + 1 ) );
+			ImGui::Text( "%d", ( item->rarity + 1 ) );
 		}
 		ImGui::TableSetColumnIndex( 1 );
 		{
-			ImGui::Text( "%S", entity->item.name );
+			ImGui::Text( "%s", item->name );
 		}
 		ImGui::TableSetColumnIndex( 2 );
 		{
@@ -368,7 +478,7 @@ void LootDisplay::Display_Item_Misc( s_loot_entity *entity )
 
 		ImGui::TableSetColumnIndex( 3 );
 		{
-			ImGui::Text( "%.1fm", player.position.DistanceFrom( entity->position ) / 10.0f );
+			ImGui::Text( "%.1fm", m_player->position.DistanceFrom( item->position ) / 10.0f );
 		}
 	}
 }
@@ -525,97 +635,52 @@ sptr_image LootDisplay::GetConsumableIcon( const s_loot_entity *entity )
 	return nullptr;
 }
 
-void LootDisplay::DrawHoverItem( s_loot_entity *entity )
+void LootDisplay::DrawHoverItem( s_cached_item *item )
 {
-	auto &config = Config::Get().loot_reader;
-	auto &player = PSUPlayer::Get();
+	Vector3F worldPos = item->position;
+	worldPos.y += m_lootConfig->hover.m_floatHeight;
 
-	Vector3F worldPos = entity->position;
-	worldPos.y += config.hover.m_floatHeight;
-
-	ImVec2 centerPos;
-	if( !ToScreenSpace( worldPos, centerPos ) ) return;
+	Vector2F centerPos;
+	if( !MathUtil::ToScreenSpace( worldPos, centerPos, Global::viewProjectionMatrix ) ) return;
 
 	auto screenPos = centerPos;
 
-	auto &data = entity->item.var_data.generic;
-	auto item_type = entity->item.item_id.var.item_type;
-	auto item_category = entity->item.item_id.var.item_category;
-	auto rank = 1 + ( data.rarity / 3 );
+	auto item_type = item->item_id.var.item_type;
+	auto item_category = item->item_id.var.item_category;
+	auto rank = 1 + ( item->rarity / 3 );
 
-	auto quantity = 0;
-	auto element_id = 0;
-	auto element_percent = 0;
-
-	auto item_name = WideToUTF8( entity->item.name );
+	std::string item_name = item->name;
 	std::string additional_name = "";
 
 	std::vector<s_icon_text_pair> additionalInfo;
 
-	// Only Weapons and Shields have element data.
-	switch( entity->item.item_id.var.item_type )
-	{
-		case weapon:
-		case line_shield:
-		{
-			auto &data = entity->item.var_data.generic;
-			element_id = data.element;
-			element_percent = data.element_percent;
-			quantity = 0;
-			rank = data.rank;
-		} break;
-
-		case meseta:
-		{
-			item_name = "Meseta";
-			quantity = 0;
-
-			// We can't get quantity from generic data, so we must parse it from the name.
-			std::wstring_view name = entity->item.name;
-			if( auto pos = name.find( L" x" ); pos != std::wstring_view::npos )
-			{
-				std::wstring_view number = name.substr( pos + 2 );
-
-				std::string digits;
-				for( wchar_t ch : number )
-				{
-					if( !iswdigit( ch ) ) break;
-					digits += static_cast< char >( ch );
-				}
-
-				std::from_chars_result result = std::from_chars( digits.data(), digits.data() + digits.size(), quantity );
-			}
-		} break;
-
-		default:
-		{
-			quantity = data.quantity;
-		} break;
-	}
-
 	// Stackable Items need to show their quantity.
-	if( quantity > 0 )
+	if( item->quantity > 0 )
 	{
-		if( config.hover.m_displayItemIcon )
+		if( m_lootConfig->hover.m_displayItemIcon )
 		{
-			additional_name += " x" + std::to_string( quantity );
+			additional_name += " x" + std::to_string( item->quantity );
 		}
 		else
 		{
-			item_name += " x" + std::to_string( quantity );
+			item_name += " x" + std::to_string( item->quantity );
 		}
 	}
 
 	auto textSize = ImGui::CalcTextSize( item_name.c_str() );
-	auto itemIcon = GetItemIcon( entity );
+	auto &itemIcon = item->icon;
 
 	// Calculate fade alpha
-	float distance = player.position.DistanceFrom( entity->position );
+	float distance = m_player->position.DistanceFrom( item->position );
 	float alpha = 1.0f;
 
-	if( config.hover.m_displayFade )
+	if( m_lootConfig->hover.m_displayFade )
 	{
-		float maxDistance = config.hover.m_fadeDistance;
+		float maxDistance = m_lootConfig->hover.m_fadeDistance;
+
+		if( distance > maxDistance )
+			return;
+
 		float fadeStart = maxDistance - 50.0f;
 		alpha = 1.0f - ( distance - fadeStart ) / ( maxDistance - fadeStart );
 		alpha = std::clamp( alpha, 0.0f, 1.0f );
@@ -627,12 +692,11 @@ void LootDisplay::DrawHoverItem( s_loot_entity *entity )
 	auto whiteColor = IM_COL32( 255, 255, 255, static_cast< int >( alpha * 255 ) );
 	auto shadowColor = IM_COL32( 0, 0, 0, static_cast< int >( alpha * 200 ) );
 
-	ImColor elementColor( m_color_element[ element_id ] );
+	ImColor textColor = whiteColor;
+	ImColor elementColor( m_color_element[ item->element ] );
 	elementColor.Value.w = alpha;
 
-	ImColor textColor = whiteColor;
-
-	if( config.hover.m_colorItemByElement )
+	if( m_lootConfig->hover.m_colorItemByElement )
 	{
 		textColor = elementColor;
 	}
@@ -642,32 +706,28 @@ void LootDisplay::DrawHoverItem( s_loot_entity *entity )
 	}
 
 	// Show Rarity
-	if( config.hover.m_displayItemRarity && item_type != enum_item_type::meseta )
+	if( m_lootConfig->hover.m_displayItemRarity && item_type != enum_item_type::meseta )
 	{
 		sptr_image starIcon = ImageManager::Get()[ ICON_STAR_00 + rank ];
-		additionalInfo.push_back( { starIcon, std::to_string( data.rarity + 1 ), whiteColor } );
+		additionalInfo.push_back( { starIcon, std::to_string( item->rarity + 1 ), whiteColor } );
 	}
 
 	// Show Item Icon and additional name
-	if( config.hover.m_displayItemIcon )
+	if( m_lootConfig->hover.m_displayItemIcon )
 	{
 		additionalInfo.push_back( { itemIcon, additional_name, whiteColor } );
 	}
 
 	// Show Element Icon and percentage
-	if( config.hover.m_displayElementIcon && data.element_percent > 0 )
+	if( m_lootConfig->hover.m_displayElementIcon && item->percent > 0 )
 	{
-		sptr_image elementIcon = ImageManager::Get()[ ICON_ELEMENT_NEUTRAL + data.element ];
-		additionalInfo.push_back( { elementIcon, std::to_string( data.element_percent ), textColor } );
+		sptr_image elementIcon = ImageManager::Get()[ ICON_ELEMENT_NEUTRAL + item->element ];
+		additionalInfo.push_back( { elementIcon, std::to_string( item->percent ), textColor } );
 	}
 
 	// Center item name
 	screenPos.x -= textSize.x * 0.5f;
-	screenPos.y -= textSize.y * 0.5f * config.hover.m_floatHeight;
-
-	//ImDrawList *drawList = ImGui::GetForegroundDrawList();
-
-	//DrawTextShadowed( drawList, screenPos, textColor, shadowColor, item_name, 1.15 );
+	screenPos.y -= textSize.y * 0.5f * m_lootConfig->hover.m_floatHeight;
 
 	s_hover_draw_param drawParams{
 	.centerPos = centerPos,
@@ -684,7 +744,13 @@ void LootDisplay::DrawHoverItem( s_loot_entity *entity )
 }
 
 void LootDisplay::DrawTextShadowed(
-	ImDrawList *drawList, const ImVec2 &pos, const ImColor &textColor, const ImColor &shadowColor, const std::string &text, float fontScale, const ImVec2 &shadowOffset )
+	ImDrawList *drawList,
+	const Vector2F &pos,
+	const ImColor &textColor,
+	const ImColor &shadowColor,
+	const std::string &text,
+	float fontScale,
+	const Vector2F &shadowOffset )
 {
 	if( !drawList || text.empty() )
 		return;
@@ -692,7 +758,7 @@ void LootDisplay::DrawTextShadowed(
 	ImGui::SetWindowFontScale( fontScale );
 
 	drawList->AddText( ImVec2( pos.x + shadowOffset.x, pos.y + shadowOffset.y ), shadowColor, text.c_str() );
-	drawList->AddText( pos, textColor, text.c_str() );
+	drawList->AddText( ImVec2{ pos.x, pos.y }, textColor, text.c_str());
 
 	ImGui::SetWindowFontScale( 1.0f );
 }
@@ -717,7 +783,7 @@ void LootDisplay::DrawIconsBelow( s_hover_draw_param &params )
 	}
 	totalWidth -= padding;
 
-	ImVec2 pos;
+	Vector2F pos;
 	pos.y = params.screenPos.y + params.textSize.y + 4.0f;
 	pos.x = params.centerPos.x - totalWidth * 0.5f;
 
@@ -726,7 +792,7 @@ void LootDisplay::DrawIconsBelow( s_hover_draw_param &params )
 		if( p.icon )
 		{
 			drawList->AddImage( ( ImTextureID )p.icon->m_texId,
-								pos,
+								ImVec2{ pos.x, pos.y },
 								ImVec2( pos.x + p.icon->m_size.x, pos.y + p.icon->m_size.y ),
 								ImVec2( 0, 0 ), ImVec2( 1, 1 ),
 								params.iconColor
@@ -745,23 +811,21 @@ void LootDisplay::DrawIconsBelow( s_hover_draw_param &params )
 	}
 }
 
-bool LootDisplay::CheckDisplayFilter( s_loot_entity *entity )
+bool LootDisplay::CheckDisplayFilter( s_cached_item *item )
 {
 	auto config = Config::Get().loot_reader;
 
-	if( entity->item.item_id.var.item_type == meseta && config.m_itemTypeFilter[ meseta ] )
+	if( item->item_id.var.item_type == meseta && m_lootConfig->m_itemTypeFilter[ meseta ] )
 	{
 		return true;
 	}
 
-	if( !config.m_itemTypeFilter[ entity->item.item_id.var.item_type ] )
+	if( !m_lootConfig->m_itemTypeFilter[ item->item_id.var.item_type ] )
 	{
 		return false;
 	}
 
-	auto rarity = entity->item.var_data.generic.rarity;
-
-	if( rarity < config.m_minimumRarity || rarity > config.m_maximumRarity )
+	if( item->rarity < m_lootConfig->m_minimumRarity || item->rarity > m_lootConfig->m_maximumRarity )
 	{
 		return false;
 	}
@@ -771,6 +835,13 @@ bool LootDisplay::CheckDisplayFilter( s_loot_entity *entity )
 
 void LootDisplay::TryFixErrorItem( s_loot_entity *entity )
 {
+	// If the player is close to the item, just teleport it to the player.
+	if( m_player->position.DistanceFrom( entity->position ) < 25.0f )
+	{
+		entity->position = m_player->position;
+		return;
+	}
+
 	auto it = m_errorItemList.find( entity->item.unique_id );
 	Vector3F originalPosition;
 
@@ -811,51 +882,4 @@ void LootDisplay::TryFixErrorItem( s_loot_entity *entity )
 			entity->position.z );
 
 	m_errorItemPass = ( m_errorItemPass + 1 ) % num_directions;
-}
-
-bool LootDisplay::ToScreenSpace( const Vector3F &worldPos, ImVec2 &screenPos )
-{
-	// Calculate the vector from the camera position to the item position
-	Vector3F toItem = worldPos - Global::cameraPosition;
-	toItem.Normalize();
-
-	// Check if the item is in front of the camera using the dot product
-	float dotProduct = toItem.Dot( Global::cameraForward );
-
-	// If the item is behind the camera, skip rendering
-	if( dotProduct <= 0.0f )
-		return false;
-
-	// Combine view and projection matrices
-	Matrix4x4 viewProjMatrix = Global::viewMatrix * Global::projectionMatrix;
-
-	// Transform the world position to clip space
-	Vector3F clipSpacePos = viewProjMatrix.Multiply( worldPos );
-
-	// If the position is behind the camera, don't render
-	if( clipSpacePos.z <= 0.0f )
-		return false;
-
-	// Convert to screen space (Perspective Divide)
-	screenPos.x = ( clipSpacePos.x / clipSpacePos.z + 1.0f ) * 0.5f * Global::screenWidth;
-	screenPos.y = ( 1.0f - ( clipSpacePos.y / clipSpacePos.z ) ) * 0.5f * Global::screenHeight;
-
-	return true;
-}
-
-std::string LootDisplay::WideToUTF8( const wchar_t *wideString )
-{
-	if( !wideString ) return std::string();
-
-	int bufferSize = WideCharToMultiByte( CP_UTF8, 0, wideString, -1, nullptr, 0, nullptr, nullptr );
-	if( bufferSize == 0 ) return std::string();
-
-	std::string utf8String( bufferSize, 0 );
-	WideCharToMultiByte( CP_UTF8, 0, wideString, -1, &utf8String[ 0 ], bufferSize, nullptr, nullptr );
-
-	// Remove null terminator if present
-	if( !utf8String.empty() && utf8String.back() == '\0' )
-		utf8String.pop_back();
-
-	return utf8String;
 }
