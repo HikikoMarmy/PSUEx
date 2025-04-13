@@ -18,6 +18,7 @@ It enhances and extends the original game by injecting new features and improvem
 
 ## 📦 Dependencies
 
+- [Microsoft Detours](https://github.com/microsoft/Detours)
 - [Dear ImGui](https://github.com/ocornut/imgui)
 - [nlohmann/json](https://github.com/nlohmann/json)
 - DirectX 9 SDK
