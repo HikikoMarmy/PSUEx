@@ -91,8 +91,9 @@ namespace TCameraTaskPlay
 		Global::cameraPosition = camera->m_position;
 		Global::cameraFocus = camera->m_focusPosition;
 
-		Global::viewMatrix = PSUMemory::ReadAbsoluteMemory< Matrix4x4 >( 0x00A85C30 );
-		Global::projectionMatrix = PSUMemory::ReadAbsoluteMemory< Matrix4x4 >( 0x00A85B30 );
+		auto viewMatrix = PSUMemory::ReadAbsoluteMemory< Matrix4x4 >( 0x00A85C30 );
+		auto projectionMatrix = PSUMemory::ReadAbsoluteMemory< Matrix4x4 >( 0x00A85B30 );
+		Global::viewProjectionMatrix = viewMatrix * projectionMatrix;
 
 		Global::cameraForward = Global::cameraFocus - Global::cameraPosition;
 		Global::cameraForward.Normalize();
@@ -126,7 +127,7 @@ namespace TCameraTaskPlay
 
 	void Hook()
 	{
-		DetourAttach( &( PVOID & )pOriginal48E4C0, reinterpret_cast< PVOID >( Hook_48E4C0 ) );
+		//DetourAttach( &( PVOID & )pOriginal48E4C0, reinterpret_cast< PVOID >( Hook_48E4C0 ) );
 		DetourAttach( &( PVOID & )pOriginal48DA90, reinterpret_cast< PVOID >( Hook_48DA90 ) );
 	}
 }
