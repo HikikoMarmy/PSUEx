@@ -59,7 +59,7 @@ namespace PSUHook::ResolutionPatch
 		int PosY = targetMonitor.rcMonitor.top + ( monitorHeight - ScreenResolutionY ) / 2;
 
 		// Calculate aspect ratio
-		float AspectRatio = ( float )ScreenResolutionX / ( float )ScreenResolutionY;
+		float AspectRatio = static_cast< float >( ScreenResolutionX ) / static_cast< float >( ScreenResolutionY );
 
 		// Save to globals, we'll need them later
 		Global::screenWidth = ScreenResolutionX;

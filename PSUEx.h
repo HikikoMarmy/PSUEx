@@ -9,14 +9,15 @@
 #include "detours.h"
 #include "resource.h"
 
-#include "Globals.h"
-#include "Constants.h"
-
 #include "PSUIni.hpp"
 #include "PSUExConfig.h"
 
+#include "Misc/Globals.h"
+#include "Misc/Constants.h"
+
 #include "PSUStructs/Item.h"
 #include "PSUStructs/PSUWorld.hpp"
+#include "PSUStructs/Vector2F.hpp"
 #include "PSUStructs/Vector3F.hpp"
 #include "PSUStructs/Matrix4x4.hpp"
 

@@ -1,8 +1,8 @@
 #include <fstream>
 
 #include "PSUExConfig.h"
-#include "Constants.h"
-#include "Globals.h"
+#include "Misc/Constants.h"
+#include "Misc/Globals.h"
 #include "Json.hpp"
 
 using json = nlohmann::json;
@@ -16,8 +16,8 @@ Config::Config()
 	config.m_windowInfo.m_size = ImVec2( 400, 300 );
 	
 	// Loot Reader
-	loot_reader.m_windowInfo.m_position = ImVec2( Global::screenWidth - 320, 180 );
-	loot_reader.m_windowInfo.m_size = ImVec2( 300, Global::screenHeight * 0.6 );
+	loot_reader.m_windowInfo.m_position = ImVec2( Global::screenWidth - 320.0f, 180.0f );
+	loot_reader.m_windowInfo.m_size = ImVec2( 300.0f, Global::screenHeight * 0.6f );
 
 	loot_reader.m_minimumElementPercent = 0;
 	loot_reader.m_minimumRarity = 0;
@@ -35,7 +35,7 @@ Config::Config()
 	loot_reader.m_elementFilter.fill( true );
 
 	// Camera
-	camera.m_windowInfo.m_position = ImVec2( 64, 64 );
+	camera.m_windowInfo.m_position = ImVec2( 64.0f, 64.0f );
 
 	camera.m_followDistance = 1.0f;
 	camera.m_fov = 1.0f;
