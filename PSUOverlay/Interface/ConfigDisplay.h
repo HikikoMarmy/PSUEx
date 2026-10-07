@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IFWinCtrl.h"
-#include "..\ImageMng.h"
+#include "../ImageMng.h"
 
 class ConfigDisplay : public IFWinCtrl
 {

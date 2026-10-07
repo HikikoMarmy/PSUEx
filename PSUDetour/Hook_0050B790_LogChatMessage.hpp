@@ -21,11 +21,13 @@ namespace sub_50B790
 
 	FILE* __cdecl LogChatMessage( int guardian_id, wchar_t *source, char message_type, void* esi )
 	{
+#ifdef _MSC_VER
 		__asm
 		{
 			push esi  // Preserve the original ESI
 			mov esi, esi  // Ensure ESI is set before calling the function
 		}
+#endif
 
 		printf( "[DEBUG] LogChatMessage - Guardian ID: %d\n", guardian_id );
 		printf( "[DEBUG] LogChatMessage - ESI Pointer: %p\n", esi );
@@ -34,7 +36,9 @@ namespace sub_50B790
 
 		FILE *result = pOriginal50B790( guardian_id, source, message_type, esi );
 
+#ifdef _MSC_VER
 		__asm pop esi  // Restore original ESI
+#endif
 
 		printf( "[DEBUG] LogChatMessage - After Call Source: %S\n", source );
 		return result;
