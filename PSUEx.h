@@ -34,6 +34,7 @@
 #include "PSUDetour/Hook_UIScale.hpp"
 #include "PSUDetour/Hook_TItemBulletSlicer.hpp"
 #include "PSUDetour/Hook_TCameraTaskPlay.hpp"
+#include "PSUDetour/Hook_TextDraw.hpp"
 
 #include "PSUDetour/Hook_00774F90.hpp"
 #include "PSUDetour/Hook_004CF9A0.hpp"
