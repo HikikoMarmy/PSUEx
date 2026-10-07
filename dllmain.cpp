@@ -22,6 +22,7 @@ DetoursHookAll()
 		TFlagManager::Hook();		// Flag Manager
 		TCameraTaskPlay::Hook();	// Camera Position
 		UIScaling::Hook();			// UI Scaling
+		TextDraw::Hook();			// Translation
 
 		//sub_76E330::Hook();	// ADX Audio Player
 		//sub_777160::Hook();	// Unknown Function

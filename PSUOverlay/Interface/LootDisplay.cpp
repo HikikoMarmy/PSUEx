@@ -54,7 +54,7 @@ LootDisplay::LootDisplay() : IFWinCtrl( "LootDisplay" )
 	this->m_errorItemList.clear();
 
 	m_itemCount = 0;
-	m_lastCacheUpdate = std::chrono::high_resolution_clock::now();
+	m_lastCacheUpdate = std::chrono::steady_clock::now();
 
 	std::memset( &m_cachedItemData[ 0 ], 0, sizeof(m_cachedItemData));
 
@@ -246,7 +246,7 @@ void LootDisplay::Render()
 
 void LootDisplay::RefreshCachedItemData()
 {
-	auto now = std::chrono::high_resolution_clock::now();
+	auto now = std::chrono::steady_clock::now();
 	if( now - m_lastCacheUpdate < std::chrono::milliseconds( 50 ) )
 		return;
 

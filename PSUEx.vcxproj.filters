@@ -61,6 +61,12 @@
     <Filter Include="Header Files\Misc">
       <UniqueIdentifier>{2e1cff3e-d40c-43f0-afb7-28d08b254170}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\PSUTranslation">
+      <UniqueIdentifier>{6b1f2e4a-3c8d-4f5e-9a7b-2d4c6e8f0a13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PSUTranslation">
+      <UniqueIdentifier>{8d3a5c7e-1f2b-4a6c-b8d9-4e6f8a0c2b35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -192,6 +198,12 @@
     <ClInclude Include="PSUDetour\Hook_UIScale.hpp">
       <Filter>Header Files\PSUFunction</Filter>
     </ClInclude>
+    <ClInclude Include="PSUDetour\Hook_TextDraw.hpp">
+      <Filter>Header Files\PSUFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="PSUTranslation\Translation.h">
+      <Filter>Header Files\PSUTranslation</Filter>
+    </ClInclude>
     <ClInclude Include="PSUDetour\Hook_InitializeD3D9.hpp">
       <Filter>Header Files\PSUFunction</Filter>
     </ClInclude>
@@ -313,6 +325,9 @@
     </ClCompile>
     <ClCompile Include="PSUStructs\PSUPlayerData.cpp">
       <Filter>Source Files\PSUStructs</Filter>
+    </ClCompile>
+    <ClCompile Include="PSUTranslation\Translation.cpp">
+      <Filter>Source Files\PSUTranslation</Filter>
     </ClCompile>
     <ClCompile Include="ExceptionHandler.cpp">
       <Filter>Header Files</Filter>

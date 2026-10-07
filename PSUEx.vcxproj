@@ -193,6 +193,8 @@
     <ClInclude Include="PSUDetour\Hook_GameFlags.hpp" />
     <ClInclude Include="PSUDetour\Hook_TCameraTaskPlay.hpp" />
     <ClInclude Include="PSUDetour\Hook_UIScale.hpp" />
+    <ClInclude Include="PSUDetour\Hook_TextDraw.hpp" />
+    <ClInclude Include="PSUTranslation\Translation.h" />
     <ClInclude Include="PSUEx.h" />
     <ClInclude Include="PSUExConfig.h" />
     <ClInclude Include="PSUIni.hpp" />
@@ -251,6 +253,7 @@
     <ClCompile Include="PSUOverlay\Interface\ConfigDisplay.cpp" />
     <ClCompile Include="PSUOverlay\PSUOverlay.cpp" />
     <ClCompile Include="PSUStructs\PSUPlayerData.cpp" />
+    <ClCompile Include="PSUTranslation\Translation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />

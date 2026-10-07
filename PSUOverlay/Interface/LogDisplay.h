@@ -3,7 +3,7 @@
 #include <mutex>
 
 #include "IFWinCtrl.h"
-#include "..\ImageMng.h"
+#include "../ImageMng.h"
 
 class LogDisplay : public IFWinCtrl
 {
