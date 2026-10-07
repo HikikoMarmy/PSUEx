@@ -22,9 +22,9 @@ It enhances and extends the original game by injecting new features and improvem
 - [Dear ImGui](https://github.com/ocornut/imgui)
 - [nlohmann/json](https://github.com/nlohmann/json)
 - DirectX 9 SDK
-## Japanese translation
+  ## Japanese translation
 
-This fork adds an optional Japanese translation to PSUEx. Text the game shows,
+PSUEx can show optional Japanese translation to PSUEx. Text the game shows,
 including item names, is shown in Japanese, and shop searches can be typed in
 Japanese.
 
