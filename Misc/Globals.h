@@ -18,6 +18,8 @@ namespace Global
 	inline int monitorBottom;
 
 	inline LPDIRECT3DDEVICE9 pD3DDevice;
+	// Called with each Direct3D device the game creates (UI scaling).
+	inline void ( *OnDeviceCreated )( LPDIRECT3DDEVICE9 pDevice ) = nullptr;
 
 	inline Vector3F cameraPosition;
 	inline Vector3F cameraFocus;

@@ -61,3 +61,4 @@ namespace PSUHook
 #include "Patch/TextSmoothingPatch.hpp"
 #include "Patch/V1TextureFilter.hpp"
 #include "Patch/ViewDistancePatch.hpp"
+#include "Patch/ControllerBackgroundPatch.hpp"

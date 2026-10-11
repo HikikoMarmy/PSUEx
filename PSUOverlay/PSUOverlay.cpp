@@ -201,6 +201,8 @@ HRESULT APIENTRY PSUOverlay::Hook_CreateDevice( IDirect3D9 *pD3D, UINT Adapter, 
 	{
 		IDirect3DDevice9 *pDevice = *ppReturnedDeviceInterface;
 
+		if( Global::OnDeviceCreated ) Global::OnDeviceCreated( pDevice );
+
 		// Log the vTable pointer
 		void **vTable = *( void *** )pDevice;
 

@@ -23,6 +23,8 @@ DetoursHookAll()
 		TCameraTaskPlay::Hook();	// Camera Position
 		UIScaling::Hook();			// UI Scaling
 		TextDraw::Hook();			// Translation
+		ControllerTriggers::Hook();	// Xbox controller triggers
+		ControllerHotplug::Hook();	// Controllers plugged in later
 
 		//sub_76E330::Hook();	// ADX Audio Player
 		//sub_777160::Hook();	// Unknown Function
